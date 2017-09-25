@@ -6,13 +6,6 @@ import time
 
 class Wallet(object):
 
-    def __init__(self):
-        """
-            Leave parameters blank for a new wallet
-        """
-        self._address = hashlib.sha256(b'{}{}'.format(time.time(), random.randrange(0, 1000000))).hexdigest()
-        self._token_amount = 0
-
     def __init__(self, address, token_amount):
         """
         :param address: existing wallet address
@@ -20,6 +13,10 @@ class Wallet(object):
         """
         self._address = address
         self._token_amount = token_amount
+
+    @staticmethod
+    def create_wallet():
+        return Wallet(hashlib.sha256(b'{}{}'.format(time.time(), random.randrange(0, 1000000))).hexdigest(), 0)
 
     @property
     def token_amount(self):

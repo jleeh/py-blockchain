@@ -1,51 +1,60 @@
 import time
 
-from flask import Flask, render_template
+import flask
+from flask import Flask, render_template, redirect
 
+from config.chain_config import ChainConfig
 from config.wallet_config import WalletConfig
-from dao.wallet_dao import WalletDao
 from obj.block import Block
+from obj.transaction import Transaction
 from obj.wallet import Wallet
-from wallet.runner import Runner
 
 app = Flask(__name__)
 
-wallet = None
 
-
-@app.route('/', methods=["GET"])
+@app.route('/', methods=['GET'])
 def wallet():
-    return render_template('wallet.html', address=wallet.address, tokens=wallet.token_amount)
+    Wallet.default = ChainConfig.sync_wallet(WalletConfig.get_default_wallet())
+    return render_template('wallet.html', address=Wallet.default.address, tokens=Wallet.default.token_amount)
 
 
-@app.route('/send', methods=["GET"])
+@app.route('/send', methods=['GET'])
 def send():
-    return render_template('send.html', max=wallet.token_amount)
+    return render_template('send.html', max=WalletConfig.default.token_amount)
 
 
-@app.route('/create-wallet', methods=["GET"])
+@app.route('/send', methods=['POST'])
+def send_submit():
+    transaction = Transaction(WalletConfig.default.address,
+                              flask.request.values.get('address'),
+                              flask.request.values.get('amount'))
+    block = Block(chain.latest_index + 1, chain.latest_block.block_hash, time.time(), transaction)
+    chain.add_block(block)
+    return redirect("/")
+
+
+@app.route('/create-wallet', methods=['GET'])
 def create_wallet():
-    new_wallet = Wallet()
-    wallet_dao.write_wallet(new_wallet)
-    wallet = new_wallet
+    Wallet.default = WalletConfig.create_default_wallet()
     return render_template(
         'wallet.html',
-        address=wallet.address,
-        tokens=wallet.token_amount,
+        address=Wallet.default.address,
+        tokens=Wallet.default.token_amount,
         message="New wallet created!"
     )
 
 
-def create_block():
-    block = Block(chain.latest_index + 1, chain.latest_block.block_hash, time.time(), "")
-    chain.add_block(block)
-    return "First Block: {}, Second Block: {}".format(chain.blocks[0].block_hash, chain.blocks[1].block_hash)
+@app.route('/load-wallet', methods=['GET'])
+def load_wallet():
+    return render_template('load_wallet.html')
+
+
+@app.route('/load-wallet', methods=['POST'])
+def load_wallet_submit():
+    Wallet.default = WalletConfig.set_default_wallet(flask.request.values.get('address'))
+    return redirect("/")
 
 
 if __name__ == '__main__':
-    chain = Runner.chain(Runner())
-    wallet = WalletConfig.get_default_wallet()
-    wallet = chain.sync_wallet(wallet)
-    wallet_dao = WalletDao(wallet.address)
-    wallet_dao.write_wallet(wallet)
+    chain = ChainConfig.get_chain()
     app.run()

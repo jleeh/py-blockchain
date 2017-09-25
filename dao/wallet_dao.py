@@ -17,9 +17,12 @@ class WalletDao(object):
         self._wallet_address = wallet_address
 
     def open_wallet(self):
-        address_file = open(self.wallet_file_path, 'r')
-        wallet = self.decode(address_file.read())
-        return self.to_wallet(wallet)
+        try:
+            address_file = open(self.wallet_file_path, 'r')
+            wallet = self.to_wallet(self.decode(address_file.read()))
+        except IOError:
+            wallet = None
+        return wallet
 
     def write_wallet(self, wallet):
         address_file = file(self.wallet_file_path, 'w')

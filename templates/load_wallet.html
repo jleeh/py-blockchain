@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>J Coin - Send Tokens</title>
+    <title>J Coin - Load Wallet</title>
 </head>
 <body>
     <p>
@@ -10,21 +10,15 @@
             <input type="submit" value="Go Back" >
         </form>
     </p>
-    <form method="post" action="/send">
+    <form method="post" action="/load-wallet">
         <p>
             <label>
-                Amount (Max {{ max }}):
-                <input type="number" value="0" size="10" name="amount">
-            </label>
-        </p>
-        <p>
-            <label>
-                To:
+                Address:
                 <input type="text" size="60" name="address">
             </label>
         </p>
         <p>
-            <input type="submit" value="Send Tokens">
+            <input type="submit" value="Load Wallet">
         </p>
     </form>
 </body>
