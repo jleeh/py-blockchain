@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>J Coin - Wallet</title>
+</head>
+<body>
+    {% if message %}
+    <p>
+        {{ message }}
+    </p>
+    {% endif %}
+    <p>
+        Address: {{ address }}
+    </p>
+    <p>
+        Tokens: {{ tokens }}
+    </p>
+    <p>
+        <form method="get" action="/send">
+            <input type="submit" value="Send Tokens">
+        </form>
+        <br/>
+        <form method="get" action="/create-wallet">
+            <input type="submit" value="Create Wallet">
+        </form>
+    </p>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>J Coin - Send Tokens</title>
+</head>
+<body>
+    <p>
+        <form action="/" method="get">
+            <input type="submit" value="Go Back" >
+        </form>
+    </p>
+    <form method="get" action="/send">
+        <p>
+            <label>
+                Amount (Max {{ max }}):
+                <input type="number" value="0" size="10">
+            </label>
+        </p>
+        <p>
+            <label>
+                To:
+                <input type="text" size="60">
+            </label>
+        </p>
+        <p>
+            <input type="submit" value="Send Tokens">
+        </p>
+    </form>
+</body>
+</html>
