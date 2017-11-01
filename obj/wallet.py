@@ -6,13 +6,16 @@ import time
 
 class Wallet(object):
 
+    address = None
+    token_amount = None
+
     def __init__(self, address, token_amount):
         """
         :param address: existing wallet address
         :param token_amount: existing wallet amount
         """
-        self._address = address
-        self._token_amount = token_amount
+        Wallet.address = address
+        Wallet.token_amount = token_amount
 
     @staticmethod
     def create_wallet():
@@ -20,12 +23,12 @@ class Wallet(object):
 
     @property
     def token_amount(self):
-        return self._token_amount
+        return self.token_amount
 
     @token_amount.setter
     def token_amount(self, value):
-        self._token_amount = value
+        self.token_amount = value
 
     @property
     def address(self):
-        return self._address
+        return self.address

@@ -1,21 +1,28 @@
 class Chain(object):
 
+    blocks = None
+    latest_index = None
+
     def __init__(self, blocks, latest_index):
-        self._blocks = blocks
-        self._latest_index = latest_index
+        Chain.blocks = blocks
+        Chain.latest_index = latest_index
 
     @property
     def latest_index(self):
-        return self._latest_index
+        return self.latest_index
+
+    @latest_index.setter
+    def latest_index(self, latest_index):
+        self.latest_index = latest_index
 
     @property
     def blocks(self):
-        return self._blocks
+        return self.blocks
 
     @property
     def latest_block(self):
-        return self._blocks[self._latest_index]
+        return self.blocks[self.latest_index]
 
     @property
     def size(self):
-        return self._blocks.__len__()
+        return self.blocks.__len__()

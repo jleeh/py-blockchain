@@ -28,8 +28,13 @@ def send_submit():
     transaction = Transaction(WalletConfig.default.address,
                               flask.request.values.get('address'),
                               flask.request.values.get('amount'))
-    block = Block(chain.latest_index + 1, chain.latest_block.block_hash, time.time(), transaction)
-    chain.add_block(block)
+    block = Block(
+        ChainConfig.chain.latest_index + 1,
+        ChainConfig.chain.blocks[ChainConfig.chain.latest_index].block_hash,
+        time.time(),
+        transaction
+    )
+    ChainConfig.add_block(block)
     return redirect("/")
 
 
@@ -56,5 +61,5 @@ def load_wallet_submit():
 
 
 if __name__ == '__main__':
-    chain = ChainConfig.get_chain()
+    ChainConfig.get_chain()
     app.run()

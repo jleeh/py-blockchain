@@ -36,16 +36,17 @@ class ChainConfig(object):
         return ChainConfig.chain
 
     @staticmethod
-    def add_block(self, block):
-        self._blocks.append(block)
-        self._latest_index = block.index
+    def add_block(block):
+        ChainConfig.chain.blocks.append(block)
+        ChainConfig.chain.latest_index = block.index
+        ChainDao.write_chain(ChainConfig.chain)
 
     @staticmethod
     def sync_wallet(wallet):
         for block in ChainConfig.chain.blocks:
             transaction = block.transaction
             if transaction.recipient == wallet.address:
-                wallet.token_amount += transaction.amount
+                wallet.token_amount += int(transaction.amount)
             elif transaction.sender == wallet.address:
-                wallet.token_amount -= transaction.amount
+                wallet.token_amount = wallet.token_amount - int(transaction.amount)
         return wallet

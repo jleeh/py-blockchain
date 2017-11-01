@@ -1,3 +1,4 @@
+from bunch import bunchify
 from flask import json
 
 from obj.wallet import Wallet
@@ -36,8 +37,8 @@ class WalletDao(object):
 
     @staticmethod
     def to_wallet(json_wallet):
-        wallet = Contents(json_wallet)
-        return Wallet(wallet._address, wallet._token_amount)
+        wallet = bunchify(Contents(json_wallet))
+        return Wallet(wallet.address, wallet.token_amount)
 
     @staticmethod
     def encode(clear):

@@ -1,5 +1,7 @@
+from bunch import bunchify
 from flask import json
 
+from obj.block import Block
 from obj.chain import Chain
 from obj.wallet import Wallet
 from wallet import crypter
@@ -37,7 +39,8 @@ class ChainDao(object):
     @staticmethod
     def to_chain(json_chain):
         chain = Contents(json_chain)
-        return Chain(chain._blocks, chain._latest_index)
+        blocks = bunchify(chain.blocks)
+        return Chain(blocks, chain.latest_index)
 
     @staticmethod
     def encode(clear):
